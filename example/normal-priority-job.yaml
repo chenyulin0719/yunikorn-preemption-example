@@ -1,15 +1,15 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: high-prio-job
+  name: normal-priority-job
 spec:
   completions: 10
   parallelism: 10
   template:
     metadata:
       labels:
-        applicationId: high-prio-job
-        queue: root.system.system-high
+        applicationId: normal-priority-job
+        queue: root.sandbox.tenants.tenant-normal
     spec:
       schedulerName: yunikorn
       containers:

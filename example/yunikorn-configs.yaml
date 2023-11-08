@@ -4,32 +4,45 @@ metadata:
   name: yunikorn-configs
   namespace: yunikorn
 data:
+  log.level: "DEBUG"
   queues.yaml: |
     partitions:
       - name: default
         queues:
         - name: root
           queues:
-          - name: system
+          - name: sandbox
+            submitacl: '*'
             resources:
               max:
                 {memory: 1000Mi, vcore: 1000m}
             queues:
-            - name: system-normal
-              submitacl: '*'
-              resources:
-                guaranteed:
-                  {memory: 500Mi, vcore: 500m}
+            - name: tenants
               properties:
-                priority.offset: "0"
-            - name: system-high
-              submitacl: '*'
-              resources:
-                guaranteed:
-                  {memory: 500Mi, vcore: 500m}
-              properties:
-                priority.offset: "1000"
-            - name: system-low
-              submitacl: '*'
-              properties:
-                priority.offset: "-1000"
+                preemption.policy: fence
+                preemption.delay: 10s
+              queues:
+              - name: tenant-normal
+                submitacl: '*'
+                resources:
+                  guaranteed:
+                    {memory: 300Mi, vcore: 300m}
+                properties:
+                  priority.offset: "0"
+              - name: tenant-high
+                submitacl: '*'
+                resources:
+                  guaranteed:
+                    {memory: 300Mi, vcore: 300m}
+                properties:
+                  priority.offset: "1000"
+              - name: tenant-low
+                submitacl: '*'
+                properties:
+                  priority.offset: "-1000"
+            - name: system
+              queues:
+              - name: system-low
+                submitacl: '*'
+                properties:
+                  priority.offset: "-9999"

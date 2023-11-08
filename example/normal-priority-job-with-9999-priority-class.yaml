@@ -11,15 +11,15 @@ globalDefault: false
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: prime-normal-prio-job
+  name: normal-priority-job-with-9999-priority-class
 spec:
   completions: 10
   parallelism: 10
   template:
     metadata:
       labels:
-        applicationId: prime-normal-prio-job
-        queue: root.system.system-normal
+        applicationId: normal-priority-job-with-9999-priority-class
+        queue: root.sandbox.tenants.tenant-normal
     spec:
       schedulerName: yunikorn
       containers:
