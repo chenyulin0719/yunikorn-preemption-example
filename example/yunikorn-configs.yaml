@@ -12,7 +12,6 @@ data:
         - name: root
           queues:
           - name: sandbox
-            submitacl: '*'
             resources:
               max:
                 {memory: 1000Mi, vcore: 1000m}
