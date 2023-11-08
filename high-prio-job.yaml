@@ -1,0 +1,22 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: high-prio-job
+spec:
+  completions: 10
+  parallelism: 10
+  template:
+    metadata:
+      labels:
+        applicationId: high-prio-job
+        queue: root.system.system-high
+    spec:
+      schedulerName: yunikorn
+      containers:
+      - name: pause
+        image: registry.k8s.io/pause:3.7
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "100Mi"
+      restartPolicy: Never

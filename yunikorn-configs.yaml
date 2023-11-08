@@ -1,0 +1,35 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: yunikorn-configs
+  namespace: yunikorn
+data:
+  queues.yaml: |
+    partitions:
+      - name: default
+        queues:
+        - name: root
+          queues:
+          - name: system
+            resources:
+              max:
+                {memory: 1000Mi, vcore: 1000m}
+            queues:
+            - name: system-normal
+              submitacl: '*'
+              resources:
+                guaranteed:
+                  {memory: 500Mi, vcore: 500m}
+              properties:
+                priority.offset: "0"
+            - name: system-high
+              submitacl: '*'
+              resources:
+                guaranteed:
+                  {memory: 500Mi, vcore: 500m}
+              properties:
+                priority.offset: "1000"
+            - name: system-low
+              submitacl: '*'
+              properties:
+                priority.offset: "-1000"

@@ -1,0 +1,33 @@
+apiVersion: scheduling.k8s.io/v1
+kind: PriorityClass
+metadata:
+  name: add-9999-priority
+  annotations:
+    yunikorn.apache.org/allow-preemption: "true"
+value: 9999
+globalDefault: false
+
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: prime-normal-prio-job
+spec:
+  completions: 10
+  parallelism: 10
+  template:
+    metadata:
+      labels:
+        applicationId: prime-normal-prio-job
+        queue: root.system.system-normal
+    spec:
+      schedulerName: yunikorn
+      containers:
+      - name: pause
+        image: registry.k8s.io/pause:3.7
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "100Mi"
+      restartPolicy: Never
+      priorityClassName: add-9999-priority
