@@ -1,14 +1,14 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: low-priority-job-fenced
+  name: low-priority-job-outside-fence
 spec:
   completions: 5
   parallelism: 5
   template:
     metadata:
       labels:
-        applicationId: low-priority-job-fenced
+        applicationId: low-priority-job-outside-fence
         queue: root.sandbox.system.system-low
     spec:
       schedulerName: yunikorn
